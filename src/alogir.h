@@ -3,7 +3,7 @@
 
 /**
  * @file   alogir.h
- * @author Tero Isannainen <tisannai@gmail.com>
+ * @author Tero Isannainen <tero.isannainen@gmail.com>
  * @date   Fri May  4 19:45:09 2018
  * 
  * @brief  Algorithm collection over containers.
