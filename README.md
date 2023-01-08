@@ -4,7 +4,7 @@ Alogir is a collection of algorithm which can be applied over
 container libraries. The targeted container libraries are:
 
 * Slinky
-* Gromer
+* Postor
 * Mapper
 * Framer
 * Ringer
@@ -14,7 +14,7 @@ The number of algorithms will be growing. Currenty there is:
 
 * ag_hash - Fast hashing, used in Mapper.
 
-* ag_heap - Binary heap sorting based on Gromer.
+* ag_heap - Binary heap sorting based on Postor.
 
 
 ## Alogir API documentation
