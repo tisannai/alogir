@@ -1,36 +1,36 @@
 /*
-*  xxHash - Fast Hash algorithm
-*  Copyright (C) 2012-2016, Yann Collet
-*
-*  BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
-*
-*  Redistribution and use in source and binary forms, with or without
-*  modification, are permitted provided that the following conditions are
-*  met:
-*
-*  * Redistributions of source code must retain the above copyright
-*  notice, this list of conditions and the following disclaimer.
-*  * Redistributions in binary form must reproduce the above
-*  copyright notice, this list of conditions and the following disclaimer
-*  in the documentation and/or other materials provided with the
-*  distribution.
-*
-*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-*  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-*  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-*  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-*  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-*  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-*  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-*  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-*  You can contact the author at :
-*  - xxHash homepage: http://www.xxhash.com
-*  - xxHash source repository : https://github.com/Cyan4973/xxHash
-*/
+ *  xxHash - Fast Hash algorithm
+ *  Copyright (C) 2012-2016, Yann Collet
+ *
+ *  BSD 2-Clause License (http://www.opensource.org/licenses/bsd-license.php)
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions are
+ *  met:
+ *
+ *  * Redistributions of source code must retain the above copyright
+ *  notice, this list of conditions and the following disclaimer.
+ *  * Redistributions in binary form must reproduce the above
+ *  copyright notice, this list of conditions and the following disclaimer
+ *  in the documentation and/or other materials provided with the
+ *  distribution.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *  You can contact the author at :
+ *  - xxHash homepage: http://www.xxhash.com
+ *  - xxHash source repository : https://github.com/Cyan4973/xxHash
+ */
 
 /*
  * MODIFICATIONS by Tero Isannainen, 2018:
@@ -56,8 +56,16 @@
 #define aghs_rotl64( x, r ) ( ( x << r ) | ( x >> ( 64 - r ) ) )
 
 
-typedef enum { aghs_big_endian = 0, aghs_little_endian = 1 } aghs_endianess;
-typedef enum { aghs_aligned, aghs_unaligned } aghs_alignment;
+typedef enum
+{
+    aghs_big_endian = 0,
+    aghs_little_endian = 1
+} aghs_endianess;
+typedef enum
+{
+    aghs_aligned,
+    aghs_unaligned
+} aghs_alignment;
 
 
 
@@ -99,21 +107,21 @@ FORCE_INLINE uint32_t aghs_read_le32_align( const void*    ptr,
 }
 
 
-//static const uint32_t PRIME32_1 = 2654435761U;
-//static const uint32_t PRIME32_2 = 2246822519U;
-//static const uint32_t PRIME32_3 = 3266489917U;
-//static const uint32_t PRIME32_4 = 668265263U;
-//static const uint32_t PRIME32_5 = 374761393U;
+// static const uint32_t PRIME32_1 = 2654435761U;
+// static const uint32_t PRIME32_2 = 2246822519U;
+// static const uint32_t PRIME32_3 = 3266489917U;
+// static const uint32_t PRIME32_4 = 668265263U;
+// static const uint32_t PRIME32_5 = 374761393U;
 
-//static uint32_t aghs_32_avalanche( uint32_t h32 )
+// static uint32_t aghs_32_avalanche( uint32_t h32 )
 //{
-//    h32 ^= h32 >> 15;
-//    h32 *= PRIME32_2;
-//    h32 ^= h32 >> 13;
-//    h32 *= PRIME32_3;
-//    h32 ^= h32 >> 16;
-//    return ( h32 );
-//}
+//     h32 ^= h32 >> 15;
+//     h32 *= PRIME32_2;
+//     h32 ^= h32 >> 13;
+//     h32 *= PRIME32_3;
+//     h32 ^= h32 >> 16;
+//     return ( h32 );
+// }
 
 #define aghs_get32bits( p ) aghs_read_le32_align( p, endian, align )
 
@@ -142,8 +150,8 @@ static ag_hash_t aghs_swap64( ag_hash_t x )
 
 
 FORCE_INLINE ag_hash_t aghs_read_le64_align( const void*    ptr,
-                                            aghs_endianess endian,
-                                            aghs_alignment align )
+                                             aghs_endianess endian,
+                                             aghs_alignment align )
 {
     if ( align == aghs_unaligned )
         return endian == aghs_little_endian ? aghs_read64( ptr )
@@ -188,11 +196,11 @@ static ag_hash_t aghs_64_avalanche( ag_hash_t h64 )
 
 #define aghs_get64bits( p ) aghs_read_le64_align( p, endian, align )
 
-static ag_hash_t aghs_64_finalize( ag_hash_t       h64,
-                                  const void*    ptr,
-                                  size_t         len,
-                                  aghs_endianess endian,
-                                  aghs_alignment align )
+static ag_hash_t aghs_64_finalize( ag_hash_t      h64,
+                                   const void*    ptr,
+                                   size_t         len,
+                                   aghs_endianess endian,
+                                   aghs_alignment align )
 {
     const uint8_t* p = (const uint8_t*)ptr;
 
@@ -201,17 +209,17 @@ static ag_hash_t aghs_64_finalize( ag_hash_t       h64,
     p++;                       \
     h64 = aghs_rotl64( h64, 11 ) * PRIME64_1;
 
-#define PROCESS4_64                                         \
-    h64 ^= ( ag_hash_t )( aghs_get32bits( p ) ) * PRIME64_1; \
-    p += 4;                                                 \
+#define PROCESS4_64                                        \
+    h64 ^= (ag_hash_t)( aghs_get32bits( p ) ) * PRIME64_1; \
+    p += 4;                                                \
     h64 = aghs_rotl64( h64, 23 ) * PRIME64_2 + PRIME64_3;
 
-#define PROCESS8_64                                                  \
-    {                                                                \
+#define PROCESS8_64                                                   \
+    {                                                                 \
         ag_hash_t const k1 = aghs_64_round( 0, aghs_get64bits( p ) ); \
-        p += 8;                                                      \
-        h64 ^= k1;                                                   \
-        h64 = aghs_rotl64( h64, 27 ) * PRIME64_1 + PRIME64_4;        \
+        p += 8;                                                       \
+        h64 ^= k1;                                                    \
+        h64 = aghs_rotl64( h64, 27 ) * PRIME64_1 + PRIME64_4;         \
     }
 
     switch ( len & 31 ) {
@@ -335,14 +343,14 @@ static ag_hash_t aghs_64_finalize( ag_hash_t       h64,
 
 
 FORCE_INLINE ag_hash_t aghs_64_endian_align( const void*    input,
-                                            size_t         len,
-                                            ag_hash_t       seed,
-                                            aghs_endianess endian,
-                                            aghs_alignment align )
+                                             size_t         len,
+                                             ag_hash_t      seed,
+                                             aghs_endianess endian,
+                                             aghs_alignment align )
 {
     const uint8_t* p = (const uint8_t*)input;
     const uint8_t* bEnd = p + len;
-    ag_hash_t       h64;
+    ag_hash_t      h64;
 
     if ( p == NULL ) {
         len = 0;
@@ -351,10 +359,10 @@ FORCE_INLINE ag_hash_t aghs_64_endian_align( const void*    input,
 
     if ( len >= 32 ) {
         const uint8_t* const limit = bEnd - 32;
-        ag_hash_t             v1 = seed + PRIME64_1 + PRIME64_2;
-        ag_hash_t             v2 = seed + PRIME64_2;
-        ag_hash_t             v3 = seed + 0;
-        ag_hash_t             v4 = seed - PRIME64_1;
+        ag_hash_t            v1 = seed + PRIME64_1 + PRIME64_2;
+        ag_hash_t            v2 = seed + PRIME64_2;
+        ag_hash_t            v3 = seed + 0;
+        ag_hash_t            v4 = seed - PRIME64_1;
 
         do {
             v1 = aghs_64_round( v1, aghs_get64bits( p ) );

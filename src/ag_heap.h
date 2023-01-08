@@ -88,7 +88,7 @@ struct aghp_s
 };
 
 /** Short type for Heap struct. */
-typedef struct aghp_s  aghp_s;
+typedef struct aghp_s aghp_s;
 
 /** Handle type for Heap. */
 typedef struct aghp_s* aghp_t;
