@@ -1,6 +1,6 @@
 #include "unity.h"
 
-#include <gromer.h>
+#include <postor.h>
 #include "ag_heap.h"
 
 
@@ -17,17 +17,17 @@ int rand_within( int limit )
 }
 
 
-void aghp_print( gr_t gr )
+void aghp_print( po_t po )
 {
     int  num;
 
-    for ( gr_size_t i = 0; i < gr->used; i++ ) {
-        num = *( (int*) gr->data[ i ] );
+    for ( po_size_t i = 0; i < po->used; i++ ) {
+        num = *( (int*) po->data[ i ] );
         printf( "  %-4ld %d\n", i, num );
     }
 }
 
-int aghp_test_cmp( const gr_d a, const gr_d b )
+int aghp_test_cmp( const po_d a, const po_d b )
 {
     int ai;
     int bi;
@@ -47,7 +47,7 @@ int aghp_test_cmp( const gr_d a, const gr_d b )
 
 void test_basic( void )
 {
-    gr_t gr;
+    po_t po;
     int lim;
     int items[ 128 ];
 
@@ -58,15 +58,15 @@ void test_basic( void )
     }
 
     lim = 16;
-    gr = gr_new_sized( lim );
+    po = po_new_sized( NULL, lim );
     
     for ( int i = 0; i < lim; i++ ) {
-        gr_push( &gr, &items[ i ] );
+        po_push( po, &items[ i ] );
     }
 
     aghp_t h;
 
-    h = aghp_new( gr, aghp_test_cmp, 1 );
+    h = aghp_new( po, aghp_test_cmp, 1 );
 
     /* Sort to ascending order. */
     aghp_ify_for_sort( h );
@@ -76,18 +76,18 @@ void test_basic( void )
     int cur;
 
     for ( int i = 0; i < lim; i++ ) {
-        cur = *( gr_item( h->gr, i, int* ) );
+        cur = *( po_item( h->po, i, int* ) );
         TEST_ASSERT_TRUE( prev <= cur ); 
     }
 
     h = aghp_del( h );
     
     /* Sort to descending order. */
-    aghp_sort_gromer( gr, aghp_test_cmp, -1 );
+    aghp_sort_postor( po, aghp_test_cmp, -1 );
 
     prev = INT_MAX;
     for ( int i = 0; i < lim; i++ ) {
-        cur = *( gr_item( gr, i, int* ) );
+        cur = *( po_item( po, i, int* ) );
         TEST_ASSERT_TRUE( prev >= cur ); 
     }
 }
@@ -95,7 +95,7 @@ void test_basic( void )
 
 void test_limits( void )
 {
-    gr_t gr;
+    po_t po;
     int lim;
     int items[ 128 ];
 
@@ -106,14 +106,14 @@ void test_limits( void )
     }
 
     lim = 16;
-    gr = gr_new_sized( lim );
+    po = po_new_sized( NULL, lim );
     
     for ( int i = 0; i < lim; i++ ) {
-        gr_push( &gr, &items[ i ] );
+        po_push( po, &items[ i ] );
     }
 
     aghp_t h;
-    h = aghp_new( gr, aghp_test_cmp, -1 );
+    h = aghp_new( po, aghp_test_cmp, -1 );
     
     TEST_ASSERT_TRUE( aghp_get_polar( h ) == -1 );
     aghp_set_polar( h, 1 );

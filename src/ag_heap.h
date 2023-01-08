@@ -13,7 +13,7 @@
  * order (max at root). Ascending and decending ordering is defined by
  * the "polarity" property. When polarity is 1, we have ascending
  * heap. When polarity is -1, the order is decending. Heap is based on
- * Gromer and thus it grows if needed.
+ * Postor and thus it grows if needed.
  *
  * Binary Heap is a tree of items where items are locally ordered, but
  * (potentially) globally unordered, i.e. partial ordering. In
@@ -62,7 +62,7 @@
  * tree, the hole will be immediately "fixed", and "incomplete"
  * branches only exist on left, if any.
  *
- * Heap can be sorted with aghp_sort() function. Unordered Gromer must
+ * Heap can be sorted with aghp_sort() function. Unordered Postor must
  * be heapified before running sorting for it. aghp_ify_for_sort() is
  * used for heapifying for sorting. Heapify is performed in inverted
  * polarity for sorting. This is not directly visible to the user,
@@ -74,17 +74,17 @@
  */
 
 
-#include <gromer.h>
+#include <postor.h>
 
 /**
  * Heap struct.
  */
 struct aghp_s
 {
-    gr_t            gr;    /**< Gromer. */
-    gr_compare_fn_p cmp;   /**< Compare function. */
-    gr_size_t       cnt;   /**< Heap item count. */
-    gr_pos_t        polar; /**< Polarity of heap (sm=1,gr=-1). */
+    po_t            po;    /**< Postor. */
+    po_compare_fn_p cmp;   /**< Compare function. */
+    po_size_t       cnt;   /**< Heap item count. */
+    po_pos_t        polar; /**< Polarity of heap (sm=1,gr=-1). */
 };
 
 /** Short type for Heap struct. */
@@ -96,7 +96,7 @@ typedef struct aghp_s* aghp_t;
 
 
 /**
- * Create Heap handle from Gromer.
+ * Create Heap handle from Postor.
  *
  * Compare function is normalized to compare a to b, and to return 1
  * if a is bigger than b.
@@ -106,26 +106,26 @@ typedef struct aghp_s* aghp_t;
  *
  * Compare function's normalized polarity is not affected by "dir".
  *
- * @param gr  Gromer.
+ * @param po  Postor.
  * @param cmp Data compare function.
  * @param dir Polarity (1=ascending).
  *
  * @return Heap.
  */
-aghp_t aghp_new( gr_t gr, gr_compare_fn_p cmp, gr_pos_t dir );
+aghp_t aghp_new( po_t po, po_compare_fn_p cmp, po_pos_t dir );
 
 
 /**
- * Initialize Heap handle using Gromer.
+ * Initialize Heap handle using Postor.
  *
  * See aghp_new() for details about parameters.
  *
  * @param h   Heap.
- * @param gr  Gromer.
+ * @param po  Postor.
  * @param cmp Data compare function.
  * @param dir Polarity.
  */
-void aghp_init( aghp_t h, gr_t gr, gr_compare_fn_p cmp, gr_pos_t dir );
+void aghp_init( aghp_t h, po_t po, po_compare_fn_p cmp, po_pos_t dir );
 
 
 /**
@@ -144,7 +144,7 @@ aghp_t aghp_del( aghp_t h );
  * @param h    Heap.
  * @param item Item.
  */
-void aghp_put( aghp_t h, gr_d item );
+void aghp_put( aghp_t h, po_d item );
 
 
 /**
@@ -157,13 +157,13 @@ void aghp_put( aghp_t h, gr_d item );
  *
  * @return Item (smallest/biggest).
  */
-gr_d aghp_get( aghp_t h );
+po_d aghp_get( aghp_t h );
 
 
 /**
  * Heapify Heap.
  *
- * The assigned Gromer items are arranged into binary heap.
+ * The assigned Postor items are arranged into binary heap.
  *
  * @param h Heap.
  */
@@ -192,13 +192,13 @@ void aghp_sort( aghp_t h );
 
 
 /**
- * Sort Gromer data.
+ * Sort Postor data.
  *
- * @param gr  Gromer.
+ * @param po  Postor.
  * @param cmp Data compare function.
  * @param dir Sort polarity (1 = ascending, -1 = decending).
  */
-void aghp_sort_gromer( gr_t gr, gr_compare_fn_p cmp, gr_pos_t dir );
+void aghp_sort_postor( po_t po, po_compare_fn_p cmp, po_pos_t dir );
 
 
 /**
@@ -219,7 +219,7 @@ int aghp_is_empty( aghp_t h );
  * @param h
  * @param polar
  */
-void aghp_set_polar( aghp_t h, gr_pos_t polar );
+void aghp_set_polar( aghp_t h, po_pos_t polar );
 
 
 /**
@@ -237,7 +237,7 @@ void aghp_inv_polar( aghp_t h );
  *
  * @return Polarity.
  */
-gr_pos_t aghp_get_polar( aghp_t h );
+po_pos_t aghp_get_polar( aghp_t h );
 
 
 

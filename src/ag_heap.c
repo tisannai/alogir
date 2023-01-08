@@ -16,25 +16,25 @@
  * Return nth heap data. Heap data is accessed starting from 1, but
  * data is stored (as normal) starting from 0.
  */
-#define aghp_nth( h, nth ) ( ( ( h )->gr->data )[ (nth)-1 ] )
+#define aghp_nth( h, nth ) ( ( ( h )->po->data )[ (nth)-1 ] )
 
 
-static int aghp_compare( aghp_t h, const gr_d a, const gr_d b );
+static int aghp_compare( aghp_t h, const po_d a, const po_d b );
 
 
 
-aghp_t aghp_new( gr_t gr, gr_compare_fn_p cmp, gr_pos_t dir )
+aghp_t aghp_new( po_t po, po_compare_fn_p cmp, po_pos_t dir )
 {
     aghp_t h;
-    h = gr_malloc( sizeof( aghp_s ) );
-    aghp_init( h, gr, cmp, dir );
+    h = po_malloc( sizeof( aghp_s ) );
+    aghp_init( h, po, cmp, dir );
     return h;
 }
 
 
-void aghp_init( aghp_t h, gr_t gr, gr_compare_fn_p cmp, gr_pos_t dir )
+void aghp_init( aghp_t h, po_t po, po_compare_fn_p cmp, po_pos_t dir )
 {
-    h->gr = gr;
+    h->po = po;
     h->cmp = cmp;
     h->cnt = AGHP_FIRST - AGHP_FIRST;
     h->polar = dir;
@@ -43,17 +43,17 @@ void aghp_init( aghp_t h, gr_t gr, gr_compare_fn_p cmp, gr_pos_t dir )
 
 aghp_t aghp_del( aghp_t h )
 {
-    gr_free( h );
+    po_free( h );
     return NULL;
 }
 
 
-void aghp_put( aghp_t h, gr_d item )
+void aghp_put( aghp_t h, po_d item )
 {
-    gr_size_t i;
+    po_size_t i;
 
-    if ( h->cnt >= h->gr->used )
-        gr_push( &( h->gr ), NULL );
+    if ( h->cnt >= h->po->used )
+        po_push( h->po, NULL );
 
     /*
      * Count is directly used as heap index, since heap indexing
@@ -73,7 +73,7 @@ void aghp_put( aghp_t h, gr_d item )
 }
 
 
-gr_d aghp_get( aghp_t h )
+po_d aghp_get( aghp_t h )
 {
     if ( aghp_is_empty( h ) ) {
 
@@ -81,11 +81,11 @@ gr_d aghp_get( aghp_t h )
 
     } else {
 
-        gr_size_t i;
-        gr_size_t child;
+        po_size_t i;
+        po_size_t child;
 
-        gr_d ret;
-        gr_d last;
+        po_d ret;
+        po_d last;
 
         ret = aghp_nth( h, AGHP_FIRST );
         last = aghp_nth( h, h->cnt-- );
@@ -122,7 +122,7 @@ gr_d aghp_get( aghp_t h )
 
 void aghp_ify( aghp_t h )
 {
-    for ( gr_size_t i = 1; i <= h->gr->used; i++ ) {
+    for ( po_size_t i = 1; i <= h->po->used; i++ ) {
         aghp_put( h, aghp_nth( h, i ) );
     }
 }
@@ -138,22 +138,22 @@ void aghp_ify_for_sort( aghp_t h )
 
 void aghp_sort( aghp_t h )
 {
-    gr_size_t lim;
+    po_size_t lim;
 
     lim = h->cnt;
 
     aghp_inv_polar( h );
-    for ( gr_size_t i = 0; i < lim; i++ ) {
+    for ( po_size_t i = 0; i < lim; i++ ) {
         aghp_nth( h, h->cnt + 1 ) = aghp_get( h );
     }
     aghp_inv_polar( h );
 }
 
 
-void aghp_sort_gromer( gr_t gr, gr_compare_fn_p cmp, gr_pos_t dir )
+void aghp_sort_postor( po_t po, po_compare_fn_p cmp, po_pos_t dir )
 {
     aghp_s hs;
-    aghp_init( &hs, gr, cmp, dir );
+    aghp_init( &hs, po, cmp, dir );
     aghp_ify_for_sort( &hs );
     aghp_sort( &hs );
 }
@@ -167,7 +167,7 @@ int aghp_is_empty( aghp_t h )
         return 1;
 }
 
-void aghp_set_polar( aghp_t h, gr_pos_t polar )
+void aghp_set_polar( aghp_t h, po_pos_t polar )
 {
     h->polar = polar;
 }
@@ -179,7 +179,7 @@ void aghp_inv_polar( aghp_t h )
 }
 
 
-gr_pos_t aghp_get_polar( aghp_t h )
+po_pos_t aghp_get_polar( aghp_t h )
 {
     return h->polar;
 }
@@ -200,7 +200,7 @@ gr_pos_t aghp_get_polar( aghp_t h )
  *
  * @return a > b => 1, a < b => -1, a == b => 0.
  */
-static int aghp_compare( aghp_t h, const gr_d a, const gr_d b )
+static int aghp_compare( aghp_t h, const po_d a, const po_d b )
 {
     return h->polar * h->cmp( a, b );
 }
